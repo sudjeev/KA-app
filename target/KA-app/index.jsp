@@ -12,7 +12,7 @@
           <form method="GET">
            <p class="lead">Type of Infection:
           	<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox1" value="limited"> Limited Infection
+						  <input type="radio" name="infection" id="inlineCheckbox1" value="limited" checked> Limited Infection
 						</label>
 						<label class="checkbox-inline">
 						  <input type="radio" name="infection" id="inlineCheckbox2" value="exact"> Exact Infection

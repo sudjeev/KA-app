@@ -31,7 +31,7 @@ public class Infection extends HttpServlet {
     			double prcnt = (Integer.parseInt(percent))/100.0;
 
 	    			if(infection.equals("limited")){
-	    				exactInfection(thisGraph, "B", prcnt);
+	    				limitedInfection(thisGraph, "B", prcnt);
 	    			} else{
 	    				exactInfection(thisGraph, "B", prcnt);
 	    			}
