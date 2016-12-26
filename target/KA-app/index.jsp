@@ -75,14 +75,14 @@
 					    .selectAll("line")
 					    .data(graph.links)
 					    .enter().append("line")
-					      .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+					      .attr("stroke-width", function(d) { return 1; });
 
 					  var node = svg.append("g")
 					      .attr("class", "nodes")
 					    .selectAll("circle")
 					    .data(graph.nodes)
 					    .enter().append("circle")
-					      .attr("r", 15)
+					      .attr("r", 4)
 					      .attr("fill", function(d) {
 					      	console.log(color(1));
 					       if(d.group == "B"){

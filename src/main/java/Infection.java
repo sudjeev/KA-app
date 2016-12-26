@@ -85,10 +85,6 @@ public class Infection extends HttpServlet {
     		// finalObj.put("links", links);
 
 
-
-    		System.out.println("GOTTEMMMMMM");
-
-
     		// Writing to a file  
         // File file = new File("JsonFile.json");  
         // file.createNewFile();  
