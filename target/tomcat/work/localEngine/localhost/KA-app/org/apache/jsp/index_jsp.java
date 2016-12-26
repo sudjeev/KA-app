@@ -110,7 +110,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("          <form method=\"GET\">\n");
       out.write("           <p class=\"lead\">Type of Infection:\n");
       out.write("          \t<label class=\"checkbox-inline\">\n");
-      out.write("\t\t\t\t\t\t  <input type=\"radio\" name=\"infection\" id=\"inlineCheckbox1\" value=\"limited\"> Limited Infection\n");
+      out.write("\t\t\t\t\t\t  <input type=\"radio\" name=\"infection\" id=\"inlineCheckbox1\" value=\"limited\" checked> Limited Infection\n");
       out.write("\t\t\t\t\t\t</label>\n");
       out.write("\t\t\t\t\t\t<label class=\"checkbox-inline\">\n");
       out.write("\t\t\t\t\t\t  <input type=\"radio\" name=\"infection\" id=\"inlineCheckbox2\" value=\"exact\"> Exact Infection\n");
