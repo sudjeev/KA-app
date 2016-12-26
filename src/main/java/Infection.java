@@ -13,6 +13,8 @@ public class Infection extends HttpServlet {
     public void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 
     		JSONParser parser = new JSONParser();
+    		double percentInfected = 0.0;
+    		double percentBadUsers = 0.0;
 
     		try { 
 
@@ -30,14 +32,22 @@ public class Infection extends HttpServlet {
 
     			double prcnt = (Integer.parseInt(percent))/100.0;
 
-	    			if(infection.equals("limited")){
-	    				limitedInfection(thisGraph, "B", prcnt);
+    			
+
+	    			if(infection.equals("Limited")){
+    					System.out.println("In limited infection");
+	    				int numInfected = limitedInfection(thisGraph, "B", prcnt);
+	    				percentInfected = ((double)numInfected/(double)thisGraph.getSize()) * 100.0;
+	    				request.setAttribute("percentInfected",Double.toString(percentInfected));
+	    				request.setAttribute("percentBadUsers","0");
 	    			} else{
-	    				exactInfection(thisGraph, "B", prcnt);
+    					System.out.println("In exact infection");
+	    				int badUsers = exactInfection(thisGraph, "B", prcnt);
+	    				percentBadUsers = ((double)badUsers/(double)thisGraph.getSize()) * 100.0;
+	    				request.setAttribute("percentInfected",percent);
+	    				request.setAttribute("percentBadUsers",Double.toString(percentBadUsers));
 	    			}
     			}
-
-
 
     			request.setAttribute("graph", thisGraph.toJSONString());
 
@@ -98,6 +108,8 @@ public class Infection extends HttpServlet {
     		String infection = request.getParameter("infection");
     		String percent = request.getParameter("percentage");
 
+
+
     		System.out.println(infection);
     		System.out.println(percent);
 
@@ -115,7 +127,7 @@ public class Infection extends HttpServlet {
 
 	//This method will infect the exact number of users requested, optimizing for the lowest number of edges between
 	//infected and uninfected nodes
-	public static void exactInfection(Graph graph, String version, double percentage){
+	public static int exactInfection(Graph graph, String version, double percentage){
 		System.out.println("Exact Infection");
 		//execute the totally infect function and then see how many nodes are left, go through the nodes in graph sorted
 		//by degree and infect all the ones with the lowest degree until we hit our exact percentage
@@ -126,7 +138,7 @@ public class Infection extends HttpServlet {
 
 		//if we can get exactly what we want without halfway infecting components then lets do that
 		if(toInfect <= 0.0){
-			return;
+			return 0;
 		}
 
 		HashMap<String, UserNode> allUsers = graph.getUsers();
@@ -143,6 +155,7 @@ public class Infection extends HttpServlet {
 		}
 
 		System.out.print("Still need to infect: " + toInfect);
+		
 
 		while(toInfect > 0){
 			UserNode curr = userPriorityQueue.poll();
@@ -151,9 +164,23 @@ public class Infection extends HttpServlet {
 			toInfect--;
 		}
 
+		int badUsers = 0;
+
+		for(UserNode u : allUsers.values()){
+			//if the user has not yet been infected then add them to the queue
+			for(String s : u.getNeighbors()){
+				UserNode thisNeighbor = allUsers.get(s);
+				String thisVersion = thisNeighbor.getVersion();
+				if(!u.getVersion().equals(thisVersion)){
+					badUsers++;
+				}
+			}
+		}
+
 		//go through all the nodes in the graph and get the ones that are not yet infected, add them to priority queue and use a comparator
 		//that sorts by number of neighbors, we want to optimize for the fewest number of neighbors
 
+		return badUsers;
 	}
 
 	//Comparator to be used for sorting user nodes to find the one with the fewest connections

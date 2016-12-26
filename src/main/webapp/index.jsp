@@ -12,10 +12,10 @@
           <form method="GET">
            <p class="lead">Type of Infection:
           	<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox1" value="limited" checked> Limited Infection
+						  <input type="radio" name="infection" id="inlineCheckbox1" value="Limited" checked> Limited Infection
 						</label>
 						<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox2" value="exact"> Exact Infection
+						  <input type="radio" name="infection" id="inlineCheckbox2" value="Exact"> Exact Infection
 						</label>
 					 </p>
 						<br />
@@ -26,6 +26,8 @@
 
 					</form>
 
+					<h4>Attempting ${infection} Infection of ${percentage}% of users</h4>
+					<h4>${percentInfected}% of users have been infected, ${percentBadUsers}% of users have a potentially bad user experience</h4>
 					<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.1.3"></script>
 
 			    <style type="text/css">
