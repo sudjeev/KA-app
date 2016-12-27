@@ -28,11 +28,10 @@ To solve this problem I wrote two functions limitedInfection and exactInfection 
 This is where the second function comes in!
 
 <b>exactInfection:</b> This function guarantees that the exact percentage of users that we want to infect will be infected. This is done by:
-<li>
+
 <ol>1. First, seeing how close we can get to our desired percentage by only totally infecting full components. Once we reach 
        the point where infecting another full component will exceed our desired percentage; we stop and move to step 2.</ol> 
- <ol>2. Next, all uninfected nodes are put into a PriorityQueue which sorts nodes by the number of edges they have (fewest edges               first). Finally we simply dequeue and infect as many nodes as we need to reach our desired percentage.</ol>
-</li>
+<ol>2. Next, all uninfected nodes are put into a PriorityQueue which sorts nodes by the number of edges they have (fewest edges                  first). Finally we simply dequeue and infect as many nodes as we need to reach our desired percentage.</ol>
 
 The benefit of exactInfection is that we are guaranteed to infect the desired number of users. The tradeoff is that some of the
 infected users may be in a component with users on a different version of the site, potentially compromising overall user experience.
@@ -48,10 +47,11 @@ is known for being NP-Complete. This is why calculating limitedInfection and exa
 Given some more time, the other things I would have liked to improve are:
 
 <ol>1. A better implementation of exactInfection. Instead of simply sorting UserNodes by the number of edges we could: 
-    - Add weights to the edges that represent how often two users interact and then sort based on this value. We would then choose to infect a node with weak edges over one with strong edges.
-    - Add a property to UserNodes that shows how often a user engages with the website. We can then target highly engaged users(brand loyal) with new versions of the site as they are likely to continue using the website despite their perception of minor bugs.</ol>
     
-<ol>2. Allowing users of [my online tool](https://dry-ravine-36414.herokuapp.com/Infection) to pass in a range of percentage values. The tool would essentially enable the user to compare the tradeoffs of limitedInfection <b>against</b> exactInfection for every value in the range. This would definitly make it easier to decide how many users to infect and what type of infection algorithm to use.</ol>
+    <ul>- Add weights to the edges that represent how often two users interact and then sort based on this value. We would then choose to           infect a node with weak edges over one with strong edges.</ul>
+    <ul>- Add a property to UserNodes that shows how often a user engages with the website. We can then target highly engaged users(brand           loyal) with new versions of the site as they are likely to continue using the website despite their perception of minor bugs.</ul></ol>
+    
+<ol>2. Allowing users of [my online tool](https://dry-ravine-36414.herokuapp.com/Infection) to pass in a range of percentage values. The    tool would essentially enable the user to compare the tradeoffs of limitedInfection <b>against</b> exactInfection for every value in the range. This would definitly make it easier to decide how many users to infect and what type of infection algorithm to use.</ol>
     
 <ol>3. Making the live demo more responsive and mobile friendly.</ol>
 
