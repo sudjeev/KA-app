@@ -126,10 +126,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\"></p>\n");
       out.write("\n");
       out.write("\t\t\t\t\t <br />\n");
-      out.write("\t\t\t\t\t <input align=\"center\" type=\"submit\" value=\"Start Infecting\" class=\"btn btn-default\" />\n");
-      out.write("\t\t\t\t\t \n");
-      out.write("\t\t\t\t\t <br />\n");
-      out.write("\t\t\t\t\t <br />\n");
+      out.write("\t\t\t\t\t <input type=\"submit\" value=\"Start Infecting\" class=\"btn btn-default\" />\n");
       out.write("\n");
       out.write("\t\t\t\t\t</form>\n");
       out.write("\n");

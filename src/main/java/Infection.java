@@ -16,6 +16,9 @@ public class Infection extends HttpServlet {
     		double percentInfected = 0.0;
     		double percentBadUsers = 0;
 
+  			String infection = request.getParameter("infection");
+  			String percent = request.getParameter("percentage");
+
     		try { 
 
     			JSONObject graphFile = (JSONObject) parser.parse(new FileReader("./src/main/java/TheGraph.json"));
@@ -24,15 +27,9 @@ public class Infection extends HttpServlet {
 
     			Graph thisGraph = new Graph(nodes, links);
 
-    			String infection = request.getParameter("infection");
-    			String percent = request.getParameter("percentage");
-
-
     			if(infection != null && percent != null && !percent.equals("")){
 
     				double prcnt = (Double.parseDouble(percent))/100.0;
-
-    			
 
 	    			if(infection.equals("Limited")){
 	    				int numInfected = limitedInfection(thisGraph, "B", prcnt);
@@ -55,9 +52,6 @@ public class Infection extends HttpServlet {
 
     			request.setAttribute("graph", thisGraph.toJSONString());
 
-    			// System.out.println("This is the entire GRAPHHHHH");
-    			// System.out.println(thisGraph.toJSONString());
-
     		} catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -65,17 +59,6 @@ public class Infection extends HttpServlet {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    		
-
-    		String infection = request.getParameter("infection");
-    		String percent = request.getParameter("percentage");
-
-    		System.out.println(infection);
-    		System.out.println(percent);
-
-    		request.setAttribute("percentage", percent);
-    		request.setAttribute("infection", infection);
-
 
     		String title = "Enter a percentage to get started";
     		String results = "";
@@ -92,12 +75,14 @@ public class Infection extends HttpServlet {
     			}
     		}
 
+
+    		request.setAttribute("percentage", percent);
+    		request.setAttribute("infection", infection);
     		request.setAttribute("title", title);
     		request.setAttribute("results", results);
 
 		    RequestDispatcher view=request.getRequestDispatcher("./index.jsp");
 		    view.forward(request,response);
-
   }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -113,10 +98,6 @@ public class Infection extends HttpServlet {
 			return -1;
 		}
 
-
-		System.out.println("Inside exact infection");
-		//execute the totally infect function and then see how many nodes are left, go through the nodes in graph sorted
-		//by degree and infect all the ones with the lowest degree until we hit our exact percentage
 		int infected = 0; 
 
 		ArrayList<Component> components = graph.getComponents();
@@ -130,7 +111,8 @@ public class Infection extends HttpServlet {
 
 		HashMap<Integer, ArrayList<Component>> map = new HashMap<Integer, ArrayList<Component>>();
 
-		System.out.println("NUMNODES is " + numNodes);
+		//calculate all possible combinations of sums of components, see which combination gets us closest to our value
+
 		allSums(components,map, 0, new ArrayList<Component>(), (int)numNodes);
 
 
@@ -159,8 +141,8 @@ public class Infection extends HttpServlet {
 
 		double toInfect = numNodes - infected;
 
-		//if we can get exactly what we want without halfway infecting components then lets do that
-		if(toInfect <= 0.0){
+		//if we have already reached our value then no need to continue
+		if(toInfect == 0.0){
 			return infected;
 		}
 
@@ -185,8 +167,6 @@ public class Infection extends HttpServlet {
 			infected++;
 		}
 
-		System.out.println("Just infected " + infected + " of the required " + numNodes );
-
 		return infected;
 	}
 
@@ -202,12 +182,11 @@ public class Infection extends HttpServlet {
 //any limited infections.
 	public static int limitedInfection(Graph graph, String version, double percentage){
 
-		System.out.println("Inside limited infection function");
-
 		if(percentage < 0.0 || percentage > 1.0){
 			System.out.println("Invalid percentage");
 			return -1;
 		}
+
 		ArrayList<Component> components = graph.getComponents();
 
 		double numNodes = Math.round(percentage * graph.getSize());
@@ -219,14 +198,15 @@ public class Infection extends HttpServlet {
 
 		HashMap<Integer, ArrayList<Component>> map = new HashMap<Integer, ArrayList<Component>>();
 
-		System.out.println("NUMNODES is " + numNodes);
-
 		allSums(components,map, 0, new ArrayList<Component>(), (int)Math.round(numNodes));
 
 		Set<Integer> allDistances = map.keySet();
 		Integer min = Integer.MAX_VALUE;
 		Integer minkey = new Integer(0);
 
+
+		//using absolute value because we want to get as close as possible to value
+		//we dont care if we have more or less infected nodes
 		Iterator iter = allDistances.iterator();
 		while(iter.hasNext()){
 			Integer thisInt = (Integer)iter.next();
@@ -246,18 +226,16 @@ public class Infection extends HttpServlet {
 			totalInfection(componentUsers.get(0), graph, version);
 		}
 
-		System.out.println("Just infected " + totalNodes + " of the required " + numNodes );
-
 		return totalNodes;
 	}
 
 	public static void allSums(ArrayList<Component> components, HashMap<Integer, ArrayList<Component>> map, int index, ArrayList<Component> currSum, int value){
-		int thisSum = 0;
+		
 		ArrayList<Component> nextSum = new ArrayList<Component>();
 
 		if(index == components.size()){
-
-			//Add the last sum array to the map
+			int thisSum = 0;
+			//Add the sum array to the map
 			for(Component c: currSum){
 				thisSum += c.getNumberOfUsers();
 			}
@@ -268,20 +246,13 @@ public class Infection extends HttpServlet {
 			return;
 		}
 
-
+		//make next sum
 		for(Component c: currSum){
 			nextSum.add(c);
 		}
 
-		//add the last value to nextSum
+		//add the next index value to next sum
 		nextSum.add(components.get(index));
-
-
-		// Integer distance = new Integer(value - thisSum);
-
-		// //put the distance value and the array of sums 
-
-		// map.put(distance, currSum);
 
 		allSums(components, map, index + 1, currSum, value);
 		allSums(components,map, index + 1, nextSum, value);
@@ -289,6 +260,7 @@ public class Infection extends HttpServlet {
 	}
 
 	//Given a user infect all other users that they are connected to
+	//Essentially BFS
 	public static void totalInfection(UserNode user, Graph graph, String version){
 		HashMap<String, UserNode> allUsers = graph.getUsers();
 		LinkedList<UserNode> queue = new LinkedList<UserNode>();
@@ -300,10 +272,7 @@ public class Infection extends HttpServlet {
 			UserNode curr = queue.pollFirst();
 			curr.setVersion(version);
 			allUsers.put(curr.getUsername(), curr);
-
-			if(!visited.contains(curr)){
-				visited.add(curr.getUsername());
-			}
+			visited.add(curr.getUsername());
 
 			ArrayList<String> neighbors = curr.getNeighbors();
 			for(String s : neighbors){

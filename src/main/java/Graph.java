@@ -18,6 +18,7 @@ public class Graph{
 		}
 	}
 
+	//This constructor thats JSON format and builds a graph out of it
 	public Graph(JSONArray nodes, JSONArray links){
 		this.users = new HashMap<String, UserNode>();
 
@@ -90,6 +91,7 @@ public class Graph{
 		return upset;
 	}
 
+	//This function returns the graph in the form of an array list of components
 	public ArrayList<Component> getComponents(){
 		//take all the user nodes and do BFS to find out each component and how many in that component, put it in a tuple
 		HashSet<String> visited = new HashSet<String>();
@@ -135,10 +137,8 @@ public class Graph{
 		return allComponents;
 	}
 
+	//This function returns the graph in the form of a JSON string
 	public String toJSONString(){
-		//nodes: {"id": "1", "group": 2}
-		//links: {"source": "1", "target": "2"}
-		//{nodes: [], links: []}
 		JSONArray nodes = new JSONArray();
 		JSONArray links = new JSONArray();
 
@@ -163,12 +163,6 @@ public class Graph{
 		thisGraph.put("links", links);
 		return thisGraph.toJSONString();
 	}
-
-	// //This function takes a node and 'infects' all other nodes it is connected to. The process of infecting a node is essentially just
-	// //changing the node's version to be B
-	// public Component totallyInfect(UserNode u){
-
-	// }
 
 	public HashMap<String, UserNode> getUsers(){
 		return new HashMap<String, UserNode>(this.users);

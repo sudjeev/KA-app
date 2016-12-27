@@ -20,10 +20,7 @@
 					 <p class="lead">Percentage of users to infect: <input type="number" name="percentage" value="${percentage}"></p>
 
 					 <br />
-					 <input align="center" type="submit" value="Start Infecting" class="btn btn-default" />
-					 
-					 <br />
-					 <br />
+					 <input type="submit" value="Start Infecting" class="btn btn-default" />
 
 					</form>
 
