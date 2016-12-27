@@ -34,7 +34,7 @@ public class Infection extends HttpServlet {
 	    			if(infection.equals("Limited")){
 	    				int numInfected = limitedInfection(thisGraph, "B", prcnt);
 	    				percentInfected = Math.round(((double)numInfected/(double)thisGraph.getSize()) * 100.0);
-	    				percentBadUsers = Math.round(((double)thisGraph.upsetUsers()/(double)thisGraph.getSize()) * 100.0);
+	    				percentBadUsers = Math.round(((double)thisGraph.countUpsetUsers()/(double)thisGraph.getSize()) * 100.0);
 	    				request.setAttribute("percentInfected",(int)percentInfected);
 	    				request.setAttribute("percentBadUsers",(int)percentBadUsers);
 	    				request.setAttribute("limitedChecked", "selected");
@@ -42,7 +42,7 @@ public class Infection extends HttpServlet {
 	    			} else{
 	    				int numInfected = exactInfection(thisGraph, "B", prcnt);
 	    				percentInfected = Math.round(((double)numInfected/(double)thisGraph.getSize()) * 100.0);
-	    				percentBadUsers = Math.round(((double)thisGraph.upsetUsers()/(double)thisGraph.getSize()) * 100.0);
+	    				percentBadUsers = Math.round(((double)thisGraph.countUpsetUsers()/(double)thisGraph.getSize()) * 100.0);
 	    				request.setAttribute("percentInfected",(int)percentInfected);
 	    				request.setAttribute("percentBadUsers",(int)percentBadUsers);
 	    				request.setAttribute("limitedChecked", "");

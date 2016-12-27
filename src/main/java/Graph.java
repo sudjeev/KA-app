@@ -63,7 +63,7 @@ public class Graph{
 
 	//function that returns the number of users who are 'upset' because one or many of their neighbors has a version
 	//of the site that they do not
-	public int upsetUsers(){
+	public int countUpsetUsers(){
 
 		HashSet<String> counted = new HashSet<String>();
 		int upset = 0;
