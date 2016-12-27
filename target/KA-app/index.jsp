@@ -11,11 +11,15 @@
  
           <form method="GET">
            <p class="lead">Type of Infection:
+           	<select name="infection" selected="${infection}">
+						  <option value="Limited" selected="${limitedChecked}">Limited Infection</option>
+						  <option value="Exact" selected="${exactChecked}">Exact Infection</option>
+						</select>
           	<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox1" value="Limited" checked> Limited Infection
+						  <input type="radio" name="infection" id="inlineCheckbox1" value="Limited" checked='${limitedChecked}'> Limited Infection
 						</label>
 						<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox2" value="Exact"> Exact Infection
+						  <input type="radio" name="infection" id="inlineCheckbox2" value="Exact" checked='${exactChecked}'> Exact Infection
 						</label>
 					 </p>
 						<br />

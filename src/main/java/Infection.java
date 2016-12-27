@@ -36,16 +36,20 @@ public class Infection extends HttpServlet {
 
 	    			if(infection.equals("Limited")){
 	    				int numInfected = limitedInfection(thisGraph, "B", prcnt);
-	    				percentInfected = ((double)numInfected/(double)thisGraph.getSize()) * 100.0;
-	    				percentBadUsers = ((double)thisGraph.upsetUsers()/(double)thisGraph.getSize()) * 100.0;
+	    				percentInfected = Math.round(((double)numInfected/(double)thisGraph.getSize()) * 100.0);
+	    				percentBadUsers = Math.round(((double)thisGraph.upsetUsers()/(double)thisGraph.getSize()) * 100.0);
 	    				request.setAttribute("percentInfected",(int)percentInfected);
 	    				request.setAttribute("percentBadUsers",(int)percentBadUsers);
+	    				request.setAttribute("limitedChecked", "selected");
+	    				request.setAttribute("exactChecked", "");
 	    			} else{
 	    				int numInfected = exactInfection(thisGraph, "B", prcnt);
-	    				percentInfected = ((double)numInfected/(double)thisGraph.getSize()) * 100.0;
-	    				percentBadUsers = ((double)thisGraph.upsetUsers()/(double)thisGraph.getSize()) * 100.0;
+	    				percentInfected = Math.round(((double)numInfected/(double)thisGraph.getSize()) * 100.0);
+	    				percentBadUsers = Math.round(((double)thisGraph.upsetUsers()/(double)thisGraph.getSize()) * 100.0);
 	    				request.setAttribute("percentInfected",(int)percentInfected);
 	    				request.setAttribute("percentBadUsers",(int)percentBadUsers);
+	    				request.setAttribute("limitedChecked", "");
+	    				request.setAttribute("exactChecked", "selected");
 	    			}
     			}
 
@@ -66,9 +70,6 @@ public class Infection extends HttpServlet {
     		String infection = request.getParameter("infection");
     		String percent = request.getParameter("percentage");
 
-
-
-
     		System.out.println(infection);
     		System.out.println(percent);
 
@@ -79,9 +80,15 @@ public class Infection extends HttpServlet {
     		String title = "Enter a percentage to get started";
     		String results = "";
 
+    		int percentInt = Integer.parseInt(percent);
+
     		if(percent != null && infection != null){
-    			title = "" + infection + " Infection on " + percent + "% of users";
-    			results = "" + request.getAttribute("percentInfected") + "% of users have been infected, " + request.getAttribute("percentBadUsers") + "% of users at risk of bad UX.";
+    			if(percentInt > 100 || percentInt < 0){
+    				title = "Please enter a valid percentage to get started";
+    			} else {
+	    			title = "" + infection + " Infection on " + percent + "% of users";
+	    			results = "" + request.getAttribute("percentInfected") + "% of users have been infected, " + request.getAttribute("percentBadUsers") + "% of users at risk of bad UX.";
+    			}
     		}
 
     		request.setAttribute("title", title);
@@ -113,7 +120,7 @@ public class Infection extends HttpServlet {
 
 		ArrayList<Component> components = graph.getComponents();
 
-		double numNodes = percentage * graph.getSize();
+		double numNodes = Math.round(percentage * graph.getSize());
 		int[] componentSizes = new int[components.size()];
 
 		for(int i = 0; i < components.size(); i++){
@@ -122,6 +129,7 @@ public class Infection extends HttpServlet {
 
 		HashMap<Integer, ArrayList<Component>> map = new HashMap<Integer, ArrayList<Component>>();
 
+		System.out.println("NUMNODES is " + numNodes);
 		allSums(components,map, 0, new ArrayList<Component>(), (int)numNodes);
 
 
@@ -147,8 +155,6 @@ public class Infection extends HttpServlet {
 			ArrayList<UserNode> componentUsers = c.getUsers();
 			totalInfection(componentUsers.get(0), graph, version);
 		}
-
-		System.out.println("Just infected " + infected + " of the required " + numNodes );
 
 		double toInfect = numNodes - infected;
 
@@ -178,6 +184,8 @@ public class Infection extends HttpServlet {
 			infected++;
 		}
 
+		System.out.println("Just infected " + infected + " of the required " + numNodes );
+
 		return infected;
 	}
 
@@ -201,7 +209,7 @@ public class Infection extends HttpServlet {
 		}
 		ArrayList<Component> components = graph.getComponents();
 
-		double numNodes = percentage * graph.getSize();
+		double numNodes = Math.round(percentage * graph.getSize());
 		int[] componentSizes = new int[components.size()];
 
 		for(int i = 0; i < components.size(); i++){
@@ -210,7 +218,9 @@ public class Infection extends HttpServlet {
 
 		HashMap<Integer, ArrayList<Component>> map = new HashMap<Integer, ArrayList<Component>>();
 
-		allSums(components,map, 0, new ArrayList<Component>(), (int)numNodes);
+		System.out.println("NUMNODES is " + numNodes);
+
+		allSums(components,map, 0, new ArrayList<Component>(), (int)Math.round(numNodes));
 
 		Set<Integer> allDistances = map.keySet();
 		Integer min = Integer.MAX_VALUE;
@@ -249,7 +259,6 @@ public class Infection extends HttpServlet {
 			//Add the last sum array to the map
 			for(Component c: currSum){
 				thisSum += c.getNumberOfUsers();
-				nextSum.add(c);
 			}
 
 			Integer distance = new Integer(value - thisSum);
@@ -260,7 +269,6 @@ public class Infection extends HttpServlet {
 
 
 		for(Component c: currSum){
-			thisSum += c.getNumberOfUsers();
 			nextSum.add(c);
 		}
 
@@ -268,11 +276,11 @@ public class Infection extends HttpServlet {
 		nextSum.add(components.get(index));
 
 
-		Integer distance = new Integer(value - thisSum);
+		// Integer distance = new Integer(value - thisSum);
 
-		//put the distance value and the array of sums 
+		// //put the distance value and the array of sums 
 
-		map.put(distance, currSum);
+		// map.put(distance, currSum);
 
 		allSums(components, map, index + 1, currSum, value);
 		allSums(components,map, index + 1, nextSum, value);

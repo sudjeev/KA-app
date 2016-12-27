@@ -11,12 +11,10 @@
  
           <form method="GET">
            <p class="lead">Type of Infection:
-          	<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox1" value="Limited" checked> Limited Infection
-						</label>
-						<label class="checkbox-inline">
-						  <input type="radio" name="infection" id="inlineCheckbox2" value="Exact"> Exact Infection
-						</label>
+           	<select name="infection" selected="${infection}">
+						  <option value="Limited" ${limitedChecked}>Limited Infection</option>
+						  <option value="Exact" ${exactChecked}>Exact Infection</option>
+						</select>
 					 </p>
 						<br />
 					 <p class="lead">Percentage of users to infect: <input type="number" name="percentage" value="${percentage}"></p>
