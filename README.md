@@ -4,13 +4,13 @@
 
 This is the repository for my solution to the Khan Academy Infection Project.
 
-I built this java application so that it could hypothetically be used by Khan Academy to analyze the percentage of their users that should receive a new version of the website, and what the tradeoffs are for such a decision.
+I built this java application so that it could hypothetically be used by Khan Academy to analyze the percentage of their users that should receive a new version of the website, and what the tradeoffs would be.
 
 The first part of the project asked for an implementation of Total Infection: if one node in a graph component 
 gets infected, all the other nodes in the same component must also get infected. 
 
 My solution to this specific section can be seen in the function totalInfection in [Infection.java](https://github.com/sudjeev/KA-app/blob/master/src/main/java/Infection.java).
-Here I am simply using a Linked List to do a Breadth First Search, infecting all UserNodes in the component, starting from 
+Here I am simply using a Linked List to do a Breadth First Search and then infecting all the UserNodes in the component, starting from 
 the given node.
 
 The next part of the project, Limited Infection, is a little more open ended. Specifically I was asked to:
@@ -30,13 +30,13 @@ This is where the second function comes in!
 <b>exactInfection:</b> This function guarantees that the exact percentage of users that we want to infect will be infected. This is done by:
 
 1. First, seeing how close we can get to our desired percentage by only totally infecting full components. Once we reach 
-       the point where infecting another full component will exceed our desired percentage; we stop and move to step 2.
+       the point where infecting another full component will exceed our desired percentage, we stop and move to step 2.
 2. Next, all uninfected nodes are put into a PriorityQueue which sorts nodes by the number of edges they have (fewest edges                  first). Finally we simply dequeue and infect as many nodes as we need to reach our desired percentage.
 
 The benefit of exactInfection is that we are guaranteed to infect the desired number of users. The tradeoff is that some of the
 infected users may be in a component with users on a different version of the site, potentially compromising overall user experience.
 
-To quantify the negative impact of exactInfection I also wrote the function <b>countUpsetUsers</b> in [Graph.java](https://github.com/sudjeev/KA-app/blob/master/src/main/java/Graph.java).
+To quantify the negative impact of exactInfection, I also wrote the function <b>countUpsetUsers</b> in [Graph.java](https://github.com/sudjeev/KA-app/blob/master/src/main/java/Graph.java).
 This basically shows how many users are at risk of a bad site experience by counting the number of edges between users on different versions of the website.
 
 While I am somewhat satisfied with the information this tool provides I do believe the one major issue with my implementation is <i>runtime</i>.
@@ -56,7 +56,7 @@ Given some more time, the other things I would have liked to improve are:
 
 
 
-
+Sudjeev
 
 
 
