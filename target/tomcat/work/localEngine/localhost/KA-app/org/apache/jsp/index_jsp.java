@@ -168,7 +168,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t\t\t\t\tvar svg = d3.select(\"svg\"),\n");
       out.write("\t\t\t\t\t    width = +svg.attr(\"width\"),\n");
       out.write("\t\t\t\t\t    height = +svg.attr(\"height\"),\n");
-      out.write("\t\t\t\t\t    radius = 4;\n");
+      out.write("\t\t\t\t\t    radius = 3;\n");
       out.write("\n");
       out.write("\t\t\t\t\tvar color = d3.scaleOrdinal(d3.schemeCategory20);\n");
       out.write("\n");

@@ -60,7 +60,7 @@
 					var svg = d3.select("svg"),
 					    width = +svg.attr("width"),
 					    height = +svg.attr("height"),
-					    radius = 4;
+					    radius = 3;
 
 					var color = d3.scaleOrdinal(d3.schemeCategory20);
 

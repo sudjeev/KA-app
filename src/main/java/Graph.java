@@ -60,6 +60,36 @@ public class Graph{
 		return this.users.size();
 	}
 
+	//function that returns the number of users who are 'upset' because one or many of their neighbors has a version
+	//of the site that they do not
+	public int upsetUsers(){
+
+		HashSet<String> counted = new HashSet<String>();
+		int upset = 0;
+
+		for(UserNode u : users.values()){
+			String thisVersion = u.getVersion();
+
+			for(String n : u.getNeighbors()){
+				UserNode neighbor = users.get(n);
+				String neighborVersion = neighbor.getVersion();
+
+				String firstHash = u.getUsername() + n;
+				String secondHash = n + u.getUsername();
+
+				if(!thisVersion.equals(neighborVersion)){
+					if(!counted.contains(firstHash) && !counted.contains(secondHash)){
+						upset++;
+						counted.add(firstHash);
+						counted.add(secondHash);
+					}
+				}
+			}
+		}
+
+		return upset;
+	}
+
 	public ArrayList<Component> getComponents(){
 		//take all the user nodes and do BFS to find out each component and how many in that component, put it in a tuple
 		HashSet<String> visited = new HashSet<String>();
