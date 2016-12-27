@@ -113,7 +113,7 @@ public class Infection extends HttpServlet {
 
 		//calculate all possible combinations of sums of components, see which combination gets us closest to our value
 
-		allSums(components,map, 0, new ArrayList<Component>(), (int)numNodes);
+		allPositiveSums(components,map, 0, new ArrayList<Component>(), (int)numNodes);
 
 
 		Set<Integer> allDistances = map.keySet();
@@ -251,6 +251,45 @@ public class Infection extends HttpServlet {
 			nextSum.add(c);
 		}
 
+		//add the next index value to next sum
+		nextSum.add(components.get(index));
+
+		allSums(components, map, index + 1, currSum, value);
+		allSums(components,map, index + 1, nextSum, value);
+
+	}
+
+	//very similar to allSums but has better performance because we only want sums that are less than or equal to 
+	//the value. This means we return out of recursive stacks when the sum exceeds our desired value
+	public static void allPositiveSums(ArrayList<Component> components, HashMap<Integer, ArrayList<Component>> map, int index, ArrayList<Component> currSum, int value){
+		
+		ArrayList<Component> nextSum = new ArrayList<Component>();
+		int thisSum = 0;
+
+		if(index == components.size()){
+			//Add the sum array to the map
+			for(Component c: currSum){
+				thisSum += c.getNumberOfUsers();
+			}
+
+			Integer distance = new Integer(value - thisSum);
+			map.put(distance, currSum);
+
+			return;
+		}
+
+		//make next sum
+		for(Component c: currSum){
+			nextSum.add(c);
+			thisSum += c.getNumberOfUsers();
+		}
+
+		thisSum += components.get(index).getNumberOfUsers();
+
+		if(thisSum > value){
+			//if the sum of nodes in our component list is greater than the number of nodes we want to infect then stop this recursive stack
+			return;
+		}
 		//add the next index value to next sum
 		nextSum.add(components.get(index));
 
