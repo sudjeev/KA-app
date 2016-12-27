@@ -2,6 +2,10 @@
 
 [Check out the live demo!](https://dry-ravine-36414.herokuapp.com/Infection)
 
+Interesting Demo Use Case:
+1. Limited Infection with 55 percent of users
+2. Exact Infection with 55 percent of users
+
 This is the repository for my solution to the Khan Academy Infection Project.
 
 I built this java application so that it could hypothetically be used by Khan Academy to analyze the percentage of their users that should receive a new version of the website, and what the tradeoffs would be.
