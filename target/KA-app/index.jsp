@@ -56,7 +56,8 @@
 
 					var svg = d3.select("svg"),
 					    width = +svg.attr("width"),
-					    height = +svg.attr("height");
+					    height = +svg.attr("height"),
+					    radius = 4;
 
 					var color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -115,9 +116,8 @@
 					        .attr("x2", function(d) { return d.target.x; })
 					        .attr("y2", function(d) { return d.target.y; });
 
-					    node
-					        .attr("cx", function(d) { return d.x; })
-					        .attr("cy", function(d) { return d.y; });
+					    node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+					        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
 					  }
 					}
 
@@ -168,19 +168,19 @@
 
 					function dragstarted(d) {
 					  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-					  // d.fx = d.x;
-					  // d.fy = d.y;
+					  d.fx = d.x;
+					  d.fy = d.y;
 					}
 
 					function dragged(d) {
-					  // d.fx = d3.event.x;
-					  // d.fy = d3.event.y;
+					  d.fx = d3.event.x;
+					  d.fy = d3.event.y;
 					}
 
 					function dragended(d) {
 					  if (!d3.event.active) simulation.alphaTarget(0);
-					  // d.fx = null;
-					  // d.fy = null;
+					  d.fx = null;
+					  d.fy = null;
 					}
 
 					draw(obj);

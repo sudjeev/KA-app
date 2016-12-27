@@ -37,11 +37,12 @@ public class Graph{
 			UserNode userOne = this.users.get((String)thisLink.get("source"));
 			UserNode userTwo = this.users.get((String)thisLink.get("target"));
 
-			userOne.addNeighbor(userTwo);
-			userTwo.addNeighbor(userOne);
-
-			this.users.put(userOne.getUsername(), userOne);
-			this.users.put(userTwo.getUsername(), userTwo);
+			if(userOne != null && userTwo != null){
+				userOne.addNeighbor(userTwo);
+				userTwo.addNeighbor(userOne);
+				this.users.put(userOne.getUsername(), userOne);
+				this.users.put(userTwo.getUsername(), userTwo);
+			}
 		}
 	}
 

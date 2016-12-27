@@ -18,7 +18,7 @@ public class Infection extends HttpServlet {
 
     		try { 
 
-    			JSONObject graphFile = (JSONObject) parser.parse(new FileReader("./src/main/java/infection.json"));
+    			JSONObject graphFile = (JSONObject) parser.parse(new FileReader("./src/main/java/TheGraph.json"));
     			JSONArray nodes = (JSONArray) graphFile.get("nodes");
     			JSONArray links = (JSONArray) graphFile.get("links");
 

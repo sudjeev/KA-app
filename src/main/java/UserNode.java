@@ -17,6 +17,10 @@ public class UserNode {
 	}
 
 	public void addNeighbor(String username){
+		
+		if(this.neighbors == null){
+			return;
+		}
 
 		if(!this.neighbors.contains(username)){
 			this.neighbors.add(username);
@@ -26,6 +30,10 @@ public class UserNode {
 	}
 
 	public void addNeighbor(UserNode u){
+		
+		if(this.neighbors == null || u == null){
+			return;
+		}
 
 		if(!this.neighbors.contains(u.getUsername())){
 			this.neighbors.add(u.getUsername());
