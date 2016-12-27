@@ -48,11 +48,13 @@ is known for being NP-Complete. This is why calculating limitedInfection and exa
 
 Given some more time, the other things I would have liked to improve were:
 
-  1. A better implementation of exactInfection. Instead of simply sorting UserNodes by the number of edges we could: 
+1. A better implementation of exactInfection. Instead of simply sorting UserNodes by the number of edges we could: 
     - Add weights to the edges that represent how often two users interact and then sort based on this value instead. We would then choose       to infect a node with weak edges over one with strong edges.
     - Add a property to UserNodes that shows how often a user engages. We can then target highly engaged users(brand loyal) with new             versions of the site as they are likely to continue using the website despite the perception of minor bugs.
- 2. Allowing users of the live demo to pass in a range of percentage values. This way the online tool would essentially evaluate how close 
+    
+2. Allowing users of the live demo to pass in a range of percentage values. This way the online tool would essentially evaluate how close 
     limitedInfection could get and the impact on UX caused by exactInfection for each percentage in the range. Seeing a matrix of percent,     limitedInfection and exactInfection for a range of values would definitly make it easier to decide on the optimal type of infection.
+    
 3. Making the live demo responsive and mobile friendly, its clear that web development today must be compatible with all devices and          screen sizes.
 
 
