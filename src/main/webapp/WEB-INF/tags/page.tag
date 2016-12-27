@@ -28,7 +28,7 @@
  
         <div class="header">
  
-            <h3 class="text-muted">Khan Academy Infection Project</h3>
+            <h3 align="center" class="text-muted">Khan Academy Infection Project</h3>
  
         </div>
  

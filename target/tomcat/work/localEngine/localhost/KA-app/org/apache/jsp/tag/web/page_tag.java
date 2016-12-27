@@ -104,7 +104,7 @@ public final class page_tag
       out.write(" \n");
       out.write("        <div class=\"header\">\n");
       out.write(" \n");
-      out.write("            <h3 class=\"text-muted\">Khan Academy Infection Project</h3>\n");
+      out.write("            <h3 align=\"center\" class=\"text-muted\">Khan Academy Infection Project</h3>\n");
       out.write(" \n");
       out.write("        </div>\n");
       out.write(" \n");

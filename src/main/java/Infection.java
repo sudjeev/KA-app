@@ -35,13 +35,11 @@ public class Infection extends HttpServlet {
     			
 
 	    			if(infection.equals("Limited")){
-    					System.out.println("In limited infection");
 	    				int numInfected = limitedInfection(thisGraph, "B", prcnt);
 	    				percentInfected = ((double)numInfected/(double)thisGraph.getSize()) * 100.0;
 	    				request.setAttribute("percentInfected",Double.toString(percentInfected));
 	    				request.setAttribute("percentBadUsers","0");
 	    			} else{
-    					System.out.println("In exact infection");
 	    				int badUsers = exactInfection(thisGraph, "B", prcnt);
 	    				percentBadUsers = ((double)badUsers/(double)thisGraph.getSize()) * 100.0;
 	    				request.setAttribute("percentInfected",percent);
@@ -51,7 +49,8 @@ public class Infection extends HttpServlet {
 
     			request.setAttribute("graph", thisGraph.toJSONString());
 
-    			System.out.println(thisGraph.toJSONString());
+    			// System.out.println("This is the entire GRAPHHHHH");
+    			// System.out.println(thisGraph.toJSONString());
 
     		} catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -61,49 +60,6 @@ public class Infection extends HttpServlet {
             e.printStackTrace();
         }
     		
-
-
-    		// JSONObject firstNode = new JSONObject();
-    		// firstNode.put("id", "1");
-    		// firstNode.put("group", "A");
-
-
-    		// JSONObject second = new JSONObject();
-    		// second.put("id", "2");
-    		// second.put("group", "B");
-
-    		// JSONArray nodes = new JSONArray();
-    		// nodes.add(firstNode);
-    		// nodes.add(second);
-
-
-    		// JSONObject firstLink = new JSONObject();
-    		// firstLink.put("source", "1");
-    		// firstLink.put("target", "2");
-
-    		// JSONObject secondLink = new JSONObject();
-    		// secondLink.put("source", "2");
-    		// secondLink.put("target", "1");
-
-    		// JSONArray links = new JSONArray();
-    		// links.add(firstLink);
-    		// links.add(secondLink);
-
-    		// JSONObject finalObj = new JSONObject();
-
-    		// finalObj.put("nodes", nodes);
-    		// finalObj.put("links", links);
-
-
-    		// Writing to a file  
-        // File file = new File("JsonFile.json");  
-        // file.createNewFile();  
-        // FileWriter fileWriter = new FileWriter(file);  
-
-
-        // fileWriter.write(test.toJSONString());  
-        // fileWriter.flush();  
-        // fileWriter.close();
 
     		String infection = request.getParameter("infection");
     		String percent = request.getParameter("percentage");
@@ -128,7 +84,7 @@ public class Infection extends HttpServlet {
 	//This method will infect the exact number of users requested, optimizing for the lowest number of edges between
 	//infected and uninfected nodes
 	public static int exactInfection(Graph graph, String version, double percentage){
-		System.out.println("Exact Infection");
+		System.out.println("Inside exact infection");
 		//execute the totally infect function and then see how many nodes are left, go through the nodes in graph sorted
 		//by degree and infect all the ones with the lowest degree until we hit our exact percentage
 		int infected = limitedInfection(graph, version, percentage);
@@ -152,10 +108,7 @@ public class Infection extends HttpServlet {
 			if(!u.getVersion().equals(version)){
 				userPriorityQueue.add(u);
 			}
-		}
-
-		System.out.print("Still need to infect: " + toInfect);
-		
+		}		
 
 		while(toInfect > 0){
 			UserNode curr = userPriorityQueue.poll();
@@ -167,7 +120,6 @@ public class Infection extends HttpServlet {
 		int badUsers = 0;
 
 		for(UserNode u : allUsers.values()){
-			//if the user has not yet been infected then add them to the queue
 			for(String s : u.getNeighbors()){
 				UserNode thisNeighbor = allUsers.get(s);
 				String thisVersion = thisNeighbor.getVersion();
@@ -179,7 +131,7 @@ public class Infection extends HttpServlet {
 
 		//go through all the nodes in the graph and get the ones that are not yet infected, add them to priority queue and use a comparator
 		//that sorts by number of neighbors, we want to optimize for the fewest number of neighbors
-
+		System.out.println("This is how many nodes have a neighbor with different version: " + badUsers);
 		return badUsers;
 	}
 
@@ -194,12 +146,15 @@ public class Infection extends HttpServlet {
 //This method will get as close as possible to infecting the percentage of users provided but cannot execute
 //any limited infections.
 	public static int limitedInfection(Graph graph, String version, double percentage){
-		System.out.println("Limited Infection");
+
+		System.out.println("Inside limited infection function");
+
 		if(percentage < 0.0 || percentage > 1.0){
 			System.out.println("Invalid percentage");
 			return -1;
 		}
 		ArrayList<Component> components = graph.getComponents();
+
 		double numNodes = percentage * graph.getSize();
 		int[] componentSizes = new int[components.size()];
 
@@ -232,20 +187,29 @@ public class Infection extends HttpServlet {
 			totalInfection(componentUsers.get(0), graph, version);
 		}
 
-		System.out.println("Attempting to infect " + numNodes + " users with version " + version );
+		System.out.println("Just infected " + totalNodes + " of the required " + numNodes );
 
 		return totalNodes;
-
 	}
 
 	public static void allSums(ArrayList<Component> components, HashMap<Integer, ArrayList<Component>> map, int index, ArrayList<Component> currSum, int value){
-		
+		int thisSum = 0;
+		ArrayList<Component> nextSum = new ArrayList<Component>();
+
 		if(index == components.size()){
+
+			//Add the last sum array to the map
+			for(Component c: currSum){
+				thisSum += c.getNumberOfUsers();
+				nextSum.add(c);
+			}
+
+			Integer distance = new Integer(Math.abs(thisSum - value));
+			map.put(distance, currSum);
+
 			return;
 		}
 
-		int thisSum = 0;
-		ArrayList<Component> nextSum = new ArrayList<Component>();
 
 		for(Component c: currSum){
 			thisSum += c.getNumberOfUsers();
@@ -255,9 +219,11 @@ public class Infection extends HttpServlet {
 		//add the last value to nextSum
 		nextSum.add(components.get(index));
 
+
 		Integer distance = new Integer(Math.abs(thisSum - value));
 
 		//put the distance value and the array of sums 
+
 		map.put(distance, currSum);
 
 		allSums(components, map, index + 1, currSum, value);

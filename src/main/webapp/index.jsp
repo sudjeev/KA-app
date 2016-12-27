@@ -22,12 +22,15 @@
 					 <p class="lead">Percentage of users to infect: <input type="number" name="percentage" value="${percentage}"></p>
 
 					 <br />
-					 <input type="submit" value="Start Infecting" class="btn btn-default" />
+					 <input align="center" type="submit" value="Start Infecting" class="btn btn-default" />
+					 
+					 <br />
+					 <br />
 
 					</form>
 
-					<h4>Attempting ${infection} Infection of ${percentage}% of users</h4>
-					<h4>${percentInfected}% of users have been infected, ${percentBadUsers}% of users have a potentially bad user experience</h4>
+					<h4 align="center">Attempting ${infection} Infection of ${percentage}% of users</h4>
+					<h4 align="center">${percentInfected}% of users have been infected, ${percentBadUsers}% of users have a potentially bad user experience</h4>
 					<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.1.3"></script>
 
 			    <style type="text/css">
@@ -85,7 +88,6 @@
 					    .enter().append("circle")
 					      .attr("r", 5)
 					      .attr("fill", function(d) {
-					      	console.log(color(1));
 					       if(d.group == "B"){
 					       	return "#3498db";
 					       } else {
@@ -97,7 +99,9 @@
 					          .on("drag", dragged)
 					          .on("end", dragended));
 
-					  node.append("title")
+					  node.append("text")
+					  		.attr("dx", 12)
+      					.attr("dy", ".35em")
 					      .text(function(d) { return d.id; });
 
 					  simulation
