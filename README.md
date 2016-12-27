@@ -3,8 +3,8 @@
 [Check out the live demo!](https://dry-ravine-36414.herokuapp.com/Infection)
 
 Interesting Demo Use Case:
-1. Limited Infection with 55 percent of users
-2. Exact Infection with 55 percent of users
+* Limited Infection with 45 percent of users
+* Exact Infection with 55 percent of users
 
 This is the repository for my solution to the Khan Academy Infection Project.
 
