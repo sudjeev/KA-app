@@ -28,9 +28,9 @@ public class Infection extends HttpServlet {
     			String percent = request.getParameter("percentage");
 
 
-    			if(infection != null && percent != null){
+    			if(infection != null && percent != null && !percent.equals("")){
 
-    			double prcnt = (Integer.parseInt(percent))/100.0;
+    				double prcnt = (Double.parseDouble(percent))/100.0;
 
     			
 
@@ -80,9 +80,10 @@ public class Infection extends HttpServlet {
     		String title = "Enter a percentage to get started";
     		String results = "";
 
-    		int percentInt = Integer.parseInt(percent);
 
-    		if(percent != null && infection != null){
+    		if(percent != null && infection != null && !percent.equals("")){
+    			int percentInt = Integer.parseInt(percent);
+
     			if(percentInt > 100 || percentInt < 0){
     				title = "Please enter a valid percentage to get started";
     			} else {
