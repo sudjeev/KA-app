@@ -195,9 +195,9 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t\t\t\t\t      .attr(\"r\", 8)\n");
       out.write("\t\t\t\t\t      .attr(\"fill\", function(d) {\n");
       out.write("\t\t\t\t\t       if(d.group == \"B\"){\n");
-      out.write("\t\t\t\t\t       \treturn \"#3498db\";\n");
+      out.write("\t\t\t\t\t       \treturn \"#c0392b\";\n");
       out.write("\t\t\t\t\t       } else {\n");
-      out.write("\t\t\t\t\t       \treturn \"#e74c3c\";\n");
+      out.write("\t\t\t\t\t       \treturn \"#2ecc71\";\n");
       out.write("\t\t\t\t\t       }\n");
       out.write("\t\t\t\t\t     })\n");
       out.write("\t\t\t\t\t      .call(d3.drag()\n");

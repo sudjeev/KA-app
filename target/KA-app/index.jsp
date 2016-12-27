@@ -89,9 +89,9 @@
 					      .attr("r", 8)
 					      .attr("fill", function(d) {
 					       if(d.group == "B"){
-					       	return "#3498db";
+					       	return "#c0392b";
 					       } else {
-					       	return "#e74c3c";
+					       	return "#2ecc71";
 					       }
 					     })
 					      .call(d3.drag()
