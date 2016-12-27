@@ -29,8 +29,8 @@
 
 					</form>
 
-					<h4 align="center">Attempting ${infection} Infection of ${percentage}% of users</h4>
-					<h4 align="center">${percentInfected}% of users have been infected, ${percentBadUsers}% of users have a potentially bad user experience</h4>
+					<h4 align="center">${title}</h4>
+					<h4 align="center">${results}</h4>
 					<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.1.3"></script>
 
 			    <style type="text/css">
@@ -60,7 +60,7 @@
 					var svg = d3.select("svg"),
 					    width = +svg.attr("width"),
 					    height = +svg.attr("height"),
-					    radius = 3;
+					    radius = 8;
 
 					var color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -86,7 +86,7 @@
 					    .selectAll("circle")
 					    .data(graph.nodes)
 					    .enter().append("circle")
-					      .attr("r", 5)
+					      .attr("r", 8)
 					      .attr("fill", function(d) {
 					       if(d.group == "B"){
 					       	return "#3498db";
